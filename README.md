@@ -16,18 +16,23 @@
 ### How to setup?
 
 #### Steps:
+1. Clone the Reprosetory
+```bash
+git clone https://github.com/HimmatMagar/VisaEligibilityPredictor-AU
+cd folder name
+```
 
-1. Create a conda environment
+2. Create a conda environment
 ```bash
 conda create -p env python==3.12 -y
 ```
 
-2. Activate conda environment
+3. Activate conda environment
 ```bash 
 conda activate env/
 ```
 
-3. Install the require library
+4. Install the require library
 ```bash
 pip install -r requirements.txt
 ```
