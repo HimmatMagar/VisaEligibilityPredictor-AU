@@ -1,4 +1,13 @@
 from src.visaPrediction import logger
+from src.visaPrediction.pipeline.data_ingestion_pipeline import DataIngestionPipeline
 
 
-logger.info("This is from the main.py file to check the logging")
+STAGE_NAME = "Data Ingestion Stage"
+try:
+      logger.info(f">>>>>> {STAGE_NAME} started <<<<<<")
+      obj = DataIngestionPipeline()
+      obj.main()
+      logger.info(f">>>>>> {STAGE_NAME} completed <<<<<<")
+except Exception as e:
+      logger.exception(e)
+      raise e

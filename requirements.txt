@@ -10,5 +10,4 @@ python-box
 ensure
 pyYAML
 notebook
-spacy
 -e .

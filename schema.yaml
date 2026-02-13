@@ -1,0 +1,10 @@
+column:
+  age: int64
+  gender: str
+  visa_type: str
+  documents_submitted: str
+  visa_granted: str
+  rejection_reason: str
+
+target_column:
+  name: visa_granted
