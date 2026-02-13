@@ -9,4 +9,5 @@ scikit-learn
 python-box
 ensure
 pyYAML
+notebook
 -e .
