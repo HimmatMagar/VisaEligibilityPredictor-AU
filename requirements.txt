@@ -1,0 +1,12 @@
+numpy
+pandas
+matplotlib
+seaborn
+fastapi[standard]
+uvicorn
+pydantic
+scikit-learn
+python-box
+ensure
+pyYAML
+-e .
