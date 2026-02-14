@@ -21,3 +21,14 @@ class DataValidationConfig:
 class DataTransformationConfig:
       root_dir: Path
       file_path: Path
+
+
+@dataclass
+class ModelBuildingConfig:
+      root_dir: Path
+      x_train_file_path: Path
+      y_train_file_path: Path
+      c: int
+      gamma: str
+      kernel: str
+      model: str

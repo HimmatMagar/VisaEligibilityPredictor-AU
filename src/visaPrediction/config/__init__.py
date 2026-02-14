@@ -57,3 +57,22 @@ class ConfigurationManager:
             )
 
             return data_transformation_config
+      
+
+      def get_model_train_config(self) -> ModelBuildingConfig:
+            config = self.config.model_building
+            params = self.params.SVM
+
+            create_directory([config.root_dir])
+
+            model_train_config = ModelBuildingConfig(
+                  root_dir=config.root_dir,
+                  x_train_file_path=config.x_train_file,
+                  y_train_file_path=config.y_train_file,
+                  c = params.C,
+                  gamma= params.gamma,
+                  kernel=params.kernel,
+                  model=config.model,
+            )
+
+            return model_train_config
