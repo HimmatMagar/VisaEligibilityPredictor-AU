@@ -1,4 +1,5 @@
 from src.visaPrediction import logger
+from src.visaPrediction.pipeline.model_eval_pipeline import ModelEvalPipeline 
 from src.visaPrediction.pipeline.model_building_pipeline import ModelBuildPipeline
 from src.visaPrediction.pipeline.data_ingestion_pipeline import DataIngestionPipeline
 from src.visaPrediction.pipeline.data_validation_pipeline import DataValidationPipeline
@@ -42,6 +43,17 @@ STAGE_NAME = "Model building Stage"
 try:
       logger.info(f">>>>>> {STAGE_NAME} started <<<<<<")
       obj = ModelBuildPipeline()
+      obj.main()
+      logger.info(f">>>>>> {STAGE_NAME} completed <<<<<<")
+except Exception as e:
+      logger.exception(e)
+      raise e
+
+
+STAGE_NAME = "Model Eval Stage"
+try:
+      logger.info(f">>>>>> {STAGE_NAME} started <<<<<<")
+      obj = ModelEvalPipeline()
       obj.main()
       logger.info(f">>>>>> {STAGE_NAME} completed <<<<<<")
 except Exception as e:

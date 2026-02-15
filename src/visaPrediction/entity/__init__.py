@@ -32,3 +32,12 @@ class ModelBuildingConfig:
       gamma: str
       kernel: str
       model: str
+
+
+@dataclass
+class ModelEvalConfig:
+      root_dir: Path
+      x_val_file_path: Path
+      y_val_file_path: Path
+      model: Path
+      metric: Path

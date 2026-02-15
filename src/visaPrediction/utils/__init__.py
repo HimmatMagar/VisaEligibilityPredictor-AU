@@ -1,6 +1,7 @@
 import os
 import yaml
 import json
+import joblib
 from pathlib import Path
 from box.config_box import ConfigBox
 from src.visaPrediction import logger
@@ -35,3 +36,11 @@ def save_json(path: Path, data: dict):
       with open(path, 'w') as f:
             json.dump(data, f, indent=4)
       logger.info(f"json file: {path} saved successfully")
+
+
+@ensure_annotations
+def load_file(file:Path):
+      with open(file, 'rb') as f:
+            data = joblib.load(f)
+      return data
+
