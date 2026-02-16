@@ -1,6 +1,6 @@
-# VisaEligibilityPredictor-AU
+# Australia Visa Eligibility Prediction
 
-#### This is the end to end Machine Learning Project that predict the visa grant for austrila based on the age, application type and document type of the applicant.
+#### This is the end to end Machine Learning Project that predict the visa grant for australia based on the age, application type and document type of the applicant.
 
 ## Project Workflow
 1. update config.yaml
