@@ -1,3 +1,4 @@
+import joblib
 from src.visaPrediction import logger
 from src.visaPrediction.config import ConfigurationManager
 from src.visaPrediction.components.data_transformation import DataTransformation
@@ -7,6 +8,7 @@ STAGE_NAME = "Data Transformation Stage"
 class DataTransformationPipeline():
       def __init__(self):
             pass
+
 
       def main(self):
             config = ConfigurationManager()
@@ -23,3 +25,4 @@ if __name__ == "__main__":
       except Exception as e:
             logger.exception(e)
             raise e
+      

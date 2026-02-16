@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Visa Eligibility Predictor</title>
+      <style>
+            * {
+                  margin: 0;
+                  padding: 0;
+                  box-sizing: border-box;
+            }
+
+            body {
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  min-height: 100vh;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  padding: 20px;
+            }
+
+            .container {
+                  background: white;
+                  padding: 40px;
+                  border-radius: 15px;
+                  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+                  max-width: 500px;
+                  width: 100%;
+            }
+
+            h1 {
+                  text-align: center;
+                  color: #333;
+                  margin-bottom: 10px;
+                  font-size: 28px;
+            }
+
+            .subtitle {
+                  text-align: center;
+                  color: #666;
+                  margin-bottom: 30px;
+                  font-size: 14px;
+            }
+
+            .form-group {
+                  margin-bottom: 20px;
+            }
+
+            label {
+                  display: block;
+                  margin-bottom: 8px;
+                  color: #333;
+                  font-weight: 600;
+                  font-size: 14px;
+            }
+
+            input[type="number"],
+            input[type="text"],
+            select {
+                  width: 100%;
+                  padding: 12px 15px;
+                  border: 2px solid #e0e0e0;
+                  border-radius: 8px;
+                  font-size: 15px;
+                  transition: all 0.3s ease;
+                  background-color: #f9f9f9;
+            }
+
+            input[type="number"]:focus,
+            input[type="text"]:focus,
+            select:focus {
+                  outline: none;
+                  border-color: #667eea;
+                  background-color: white;
+            }
+
+            .btn-predict {
+                  width: 100%;
+                  padding: 15px;
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  color: white;
+                  border: none;
+                  border-radius: 8px;
+                  font-size: 16px;
+                  font-weight: 600;
+                  cursor: pointer;
+                  transition: transform 0.2s ease, box-shadow 0.2s ease;
+                  margin-top: 10px;
+            }
+
+            .btn-predict:hover {
+                  transform: translateY(-2px);
+                  box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            }
+
+            .btn-predict:active {
+                  transform: translateY(0);
+            }
+
+            .btn-predict:disabled {
+                  background: #ccc;
+                  cursor: not-allowed;
+                  transform: none;
+            }
+
+            .loading {
+                  display: inline-block;
+                  width: 16px;
+                  height: 16px;
+                  border: 2px solid #ffffff;
+                  border-radius: 50%;
+                  border-top-color: transparent;
+                  animation: spin 0.8s linear infinite;
+                  margin-left: 10px;
+            }
+
+            @keyframes spin {
+                  to {
+                        transform: rotate(360deg);
+                  }
+            }
+
+            .helper-text {
+                  font-size: 12px;
+                  color: #888;
+                  margin-top: 5px;
+            }
+
+            /* Custom Alert Styles */
+            .custom-alert {
+                  position: fixed;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  background: white;
+                  padding: 30px 40px;
+                  border-radius: 15px;
+                  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+                  z-index: 1000;
+                  min-width: 300px;
+                  max-width: 90%;
+                  text-align: center;
+                  display: none;
+            }
+
+            .custom-alert.show {
+                  display: block;
+                  animation: slideIn 0.3s ease;
+            }
+
+            @keyframes slideIn {
+                  from {
+                        opacity: 0;
+                        transform: translate(-50%, -60%);
+                  }
+
+                  to {
+                        opacity: 1;
+                        transform: translate(-50%, -50%);
+                  }
+            }
+
+            .alert-overlay {
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                  bottom: 0;
+                  background: rgba(0, 0, 0, 0.5);
+                  z-index: 999;
+                  display: none;
+            }
+
+            .alert-overlay.show {
+                  display: block;
+            }
+
+            .alert-icon {
+                  font-size: 48px;
+                  margin-bottom: 15px;
+            }
+
+            .alert-title {
+                  font-size: 22px;
+                  font-weight: 600;
+                  margin-bottom: 10px;
+                  color: #333;
+            }
+
+            .alert-message {
+                  font-size: 16px;
+                  color: #666;
+                  margin-bottom: 20px;
+                  line-height: 1.5;
+            }
+
+            .alert-btn {
+                  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                  color: white;
+                  border: none;
+                  padding: 10px 30px;
+                  border-radius: 8px;
+                  font-size: 14px;
+                  font-weight: 600;
+                  cursor: pointer;
+                  transition: transform 0.2s ease;
+            }
+
+            .alert-btn:hover {
+                  transform: scale(1.05);
+            }
+
+            .success {
+                  color: #10b981;
+            }
+
+            .error {
+                  color: #ef4444;
+            }
+      </style>
+</head>
+
+<body>
+      <div class="container">
+            <h1> AU-Visa Eligibility Predictor</h1>
+            <p class="subtitle">Fill in your details to check visa eligibility</p>
+
+            <form id="predictionForm">
+                  <div class="form-group">
+                        <label for="age">Age *</label>
+                        <input type="number" id="age" name="age" required min="1" max="60" placeholder="Enter your age">
+                        <p class="helper-text">Enter your age</p>
+                  </div>
+
+                  <div class="form-group">
+                        <label for="gender">Gender *</label>
+                        <select id="gender" name="gender" required>
+                              <option value="">Select gender</option>
+                              <option value="male">Male</option>
+                              <option value="female">Female</option>
+                        </select>
+                  </div>
+
+                  <div class="form-group">
+                        <label for="visa_type">Visa Type *</label>
+                        <select id="visa_type" name="visa_type" required>
+                              <option value="">Select visa type</option>
+                              <option value="student visa">Student Visa</option>
+                              <option value="work visa">Work Visa</option>
+                              <option value="visit visa">Visit Visa</option>
+                        </select>
+                  </div>
+
+                  <div class="form-group">
+                        <label for="documents_submitted">Documents Submitted *</label>
+                        <input type="text" id="documents_submitted" name="documents_submitted" required
+                              placeholder="e.g., passport, photo, bank statement">
+                        <p class="helper-text">Enter documents separated by commas</p>
+                  </div>
+
+                  <button type="submit" class="btn-predict" id="predictBtn">
+                        Get Prediction
+                  </button>
+            </form>
+      </div>
+
+      <!-- Custom Alert -->
+      <div class="alert-overlay" id="alertOverlay"></div>
+      <div class="custom-alert" id="customAlert">
+            <div class="alert-icon" id="alertIcon"></div>
+            <div class="alert-title" id="alertTitle"></div>
+            <div class="alert-message" id="alertMessage"></div>
+            <button class="alert-btn" onclick="closeAlert()">OK</button>
+      </div>
+
+      <script>
+            // API Configuration
+            const API_URL = 'http://127.0.0.1:8001/predict'; // Change this to your FastAPI URL
+
+            // Form submission handler
+            document.getElementById('predictionForm').addEventListener('submit', async function (e) {
+                  e.preventDefault();
+
+                  const btn = document.getElementById('predictBtn');
+                  const originalText = btn.innerHTML;
+
+                  // Disable button and show loading
+                  btn.disabled = true;
+                  btn.innerHTML = 'Processing<span class="loading"></span>';
+
+                  // Get form data
+                  const formData = {
+                        age: parseInt(document.getElementById('age').value),
+                        gender: document.getElementById('gender').value,
+                        visa_type: document.getElementById('visa_type').value,
+                        documents_submitted: document.getElementById('documents_submitted').value
+                  };
+
+                  try {
+                        // Call FastAPI endpoint
+                        const response = await fetch(API_URL, {
+                              method: 'POST',
+                              headers: {
+                                    'Content-Type': 'application/json',
+                              },
+                              body: JSON.stringify(formData)
+                        });
+
+                        if (!response.ok) {
+                              throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const result = await response.json();
+
+                        // Show success alert
+                        showAlert(
+                              'success',
+                              '✅',
+                              'Prediction Result',
+                              `Prediction: ${result.prediction}\nStatus: ${result.status || 'Success'}`
+                        );
+
+                  } catch (error) {
+                        console.error('Error:', error);
+
+                        // Show error alert
+                        showAlert(
+                              'error',
+                              '❌',
+                              'Error',
+                              `Failed to get prediction: ${error.message}\n\nPlease make sure your FastAPI server is running on ${API_URL}`
+                        );
+                  } finally {
+                        // Re-enable button
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
+                  }
+            });
+
+            // Show custom alert
+            function showAlert(type, icon, title, message) {
+                  const overlay = document.getElementById('alertOverlay');
+                  const alert = document.getElementById('customAlert');
+                  const alertIcon = document.getElementById('alertIcon');
+                  const alertTitle = document.getElementById('alertTitle');
+                  const alertMessage = document.getElementById('alertMessage');
+
+                  alertIcon.innerHTML = icon;
+                  alertIcon.className = `alert-icon ${type}`;
+                  alertTitle.innerHTML = title;
+                  alertMessage.innerHTML = message.replace(/\n/g, '<br>');
+
+                  overlay.classList.add('show');
+                  alert.classList.add('show');
+            }
+
+            // Close alert
+            function closeAlert() {
+                  const overlay = document.getElementById('alertOverlay');
+                  const alert = document.getElementById('customAlert');
+
+                  overlay.classList.remove('show');
+                  alert.classList.remove('show');
+            }
+
+            // Close alert when clicking overlay
+            document.getElementById('alertOverlay').addEventListener('click', closeAlert);
+      </script>
+</body>
+
+</html>

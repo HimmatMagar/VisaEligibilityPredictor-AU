@@ -17,7 +17,8 @@ class DataTransformation:
       def clean_data(self):
             df = pd.read_csv(self.config.file_path)
 
-            df.drop(columns='rejection_reason', inplace=True)
+            if 'rejection_reason' in df.columns:
+                  df.drop(columns='rejection_reason', inplace=True)
 
             df['documents_submitted'] = df['documents_submitted'].str.replace(',', ' ', regex=True).str.lower()
             return df
@@ -43,9 +44,9 @@ class DataTransformation:
             )
             x = preprocessor.fit_transform(X)
             y = df['visa_granted']
+            joblib.dump(preprocessor, os.path.join(self.config.root_dir, 'preprocessor.pkl'))
 
             return x, y
-      
       
       def split_data(self):
             x, y = self.transform_data()
