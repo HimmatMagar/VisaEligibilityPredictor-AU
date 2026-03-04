@@ -57,12 +57,6 @@ listed here – the step‑by‑step notebooks have been omitted for brevity.
 └── dockerfile                # instructions for containerising the app
 ```
 
-#### Steps:
-1. Clone the Reprosetory
-```bash
-git clone https://github.com/HimmatMagar/VisaEligibilityPredictor-AU
-cd folder name
-```
 ## Getting started
 
 ### Prerequisites
