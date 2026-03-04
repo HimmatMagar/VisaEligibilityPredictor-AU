@@ -23,13 +23,14 @@ class UserInput(BaseModel):
 
 
 @app.get('/')
-def home():
+async def home():
       return "hello"
 
 predicts = PredictionPipeline()
 
 @app.post("/predict")
-def prediction(input: UserInput):
+async def prediction(input: UserInput):
+      # build a dataframe from user input so we can echo it back if needed
       data = pd.DataFrame([{
             'age': input.age,
             'gender': input.gender,
@@ -37,9 +38,32 @@ def prediction(input: UserInput):
             'documents_submitted': input.documents_submitted
       }])
 
+      # run through pipeline
       x = predicts.transform_user_input(data)
       pred = predicts.prediction(data=x)
-      return {
-            "prediction": pred.tolist() if hasattr(pred, 'tolist') else pred,
+
+      # normalize prediction into a list so we can work with it easily
+      if hasattr(pred, 'tolist'):
+            pred_list = pred.tolist()
+      else:
+            pred_list = [pred]
+
+      # convert numeric/boolean output to human-readable Yes/No if appropriate
+      def human_label(val):
+            if isinstance(val, str):
+                  return val
+            try:
+                  # assume binary 0/1
+                  return "Yes" if int(val) == 1 else "No"
+            except Exception:
+                  return val
+
+      readable = [human_label(p) for p in pred_list]
+
+      # only return the human-readable prediction and a status
+      result = {
+            "prediction": readable,
             "status": "success"
-      } 
+      }
+
+      return result 

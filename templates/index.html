@@ -278,7 +278,7 @@
 
       <script>
             // API Configuration
-            const API_URL = 'http://127.0.0.1:8001/predict'; // Change this to your FastAPI URL
+            const API_URL = 'http://127.0.0.1:8000/predict'; // Change this to your FastAPI URL
 
             // Form submission handler
             document.getElementById('predictionForm').addEventListener('submit', async function (e) {
@@ -315,12 +315,14 @@
 
                         const result = await response.json();
 
-                        // Show success alert
+                        // Show success alert with only the prediction
+                        const message = `Prediction: ${result.prediction}\nStatus: ${result.status || 'Success'}`;
+
                         showAlert(
                               'success',
                               '✅',
                               'Prediction Result',
-                              `Prediction: ${result.prediction}\nStatus: ${result.status || 'Success'}`
+                              message
                         );
 
                   } catch (error) {
