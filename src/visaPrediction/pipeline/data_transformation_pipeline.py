@@ -14,7 +14,7 @@ class DataTransformationPipeline():
             config = ConfigurationManager()
             data_transformation_config = config.get_data_transformation_config()
             data_transform = DataTransformation(data_transformation_config)
-            data_transform.split_data()
+            data_transform.transform_data()
       
 if __name__ == "__main__":
       try:

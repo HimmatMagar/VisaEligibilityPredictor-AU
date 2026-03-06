@@ -39,8 +39,7 @@ async def prediction(input: UserInput):
       }])
 
       # run through pipeline
-      x = predicts.transform_user_input(data)
-      pred = predicts.prediction(data=x)
+      pred = predicts.prediction(data=data)
 
       # normalize prediction into a list so we can work with it easily
       if hasattr(pred, 'tolist'):
